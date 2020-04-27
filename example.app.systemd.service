@@ -1,0 +1,16 @@
+[Unit]
+Description=yourthing API Gunicorn
+After=network.target
+
+[Service]
+User=andrei
+Group=andrei
+WorkingDirectory=/opt/yourthing/poc-api
+ExecStart=/home/andrei/.pyenv/versions/yourthing-poc-api/bin/gunicorn -k uvicorn.workers.UvicornWorker -c /opt/yourthing/poc-api/gunicorn_conf.py app.main:app
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+Environment=BIND=unix:/tmp/yourthing-api-gunicorn.sock
+
+[Install]
+WantedBy=multi-user.target
